@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { BackgroundDecor } from "@/components/BackgroundDecor";
 import { ScreenTransition } from "@/components/ScreenTransition";
-import { idleContent } from "@/config/content";
+import { idleContent, ratingOptions } from "@/config/content";
 
 export function IdleScreen({ onStart }: { onStart: () => void }) {
   return (
@@ -12,11 +12,11 @@ export function IdleScreen({ onStart }: { onStart: () => void }) {
       <button
         type="button"
         onClick={onStart}
-        className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-vale-charcoalDeep via-vale-charcoalDark to-vale-charcoal px-6 py-8 text-center sm:px-10 md:px-16"
+        className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-vale-charcoalDeep via-vale-charcoalDark to-vale-charcoal text-center"
       >
         <BackgroundDecor variant="dark" />
 
-        <div className="relative z-10 flex h-full w-full max-w-4xl flex-col items-center justify-center gap-8 py-4 sm:gap-10 md:gap-12 lg:gap-14">
+        <div className="relative z-10 flex max-h-full w-full max-w-4xl flex-col items-center gap-6 overflow-y-auto px-6 py-6 sm:gap-8 sm:px-10 sm:py-8 md:gap-9 md:px-16 lg:gap-10">
           <div className="flex flex-col items-center gap-2 sm:gap-3">
             <Image
               src="/brand/white/vale-horizontal.png"
@@ -24,18 +24,18 @@ export function IdleScreen({ onStart }: { onStart: () => void }) {
               width={591}
               height={163}
               priority
-              className="h-12 w-auto drop-shadow-[0_2px_24px_rgba(155,176,147,0.25)] sm:h-16 md:h-20 lg:h-24"
+              className="h-11 w-auto drop-shadow-[0_2px_24px_rgba(155,176,147,0.25)] sm:h-14 md:h-16 lg:h-20"
             />
             <span className="font-display text-sm uppercase tracking-[0.5em] text-vale-sageLight sm:text-lg md:text-xl">
               Café
             </span>
           </div>
 
-          <div className="flex flex-col items-center gap-4 sm:gap-5 md:gap-6">
+          <div className="flex flex-col items-center gap-3 sm:gap-4 md:gap-5">
             <span className="font-display text-xs uppercase tracking-[0.4em] text-vale-sageLight/80 sm:text-sm md:text-base">
               {idleContent.eyebrow}
             </span>
-            <h1 className="whitespace-pre-line font-display text-3xl font-medium leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="whitespace-pre-line font-display text-3xl font-medium leading-tight text-white sm:text-5xl md:text-6xl">
               {idleContent.title}
             </h1>
             <p className="max-w-md text-base text-white/70 sm:max-w-xl sm:text-xl md:text-2xl">
@@ -46,11 +46,31 @@ export function IdleScreen({ onStart }: { onStart: () => void }) {
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-5 sm:gap-7 md:gap-9">
+            {ratingOptions.map((option, i) => (
+              <motion.span
+                key={option.value}
+                animate={{ y: [0, -8, 0] }}
+                transition={{
+                  duration: 2.4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i * 0.25,
+                }}
+                className="text-4xl sm:text-5xl md:text-6xl"
+                role="img"
+                aria-label={option.label}
+              >
+                {option.emoji}
+              </motion.span>
+            ))}
+          </div>
+
+          <div className="flex flex-col items-center gap-2 sm:gap-3">
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-              className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 text-2xl text-white sm:h-16 sm:w-16 md:h-20 md:w-20 md:text-3xl"
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 text-xl text-white sm:h-14 sm:w-14 sm:text-2xl md:h-16 md:w-16 md:text-3xl"
             >
               👆
             </motion.div>
