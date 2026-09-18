@@ -35,12 +35,20 @@ export function RatingScreen({
     timeoutRef.current = setTimeout(() => onSelect(value), 520);
   }
 
+  function handleBack() {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    onBack();
+  }
+
   return (
     <ScreenTransition>
       <div className="relative flex h-full w-full flex-col overflow-hidden bg-vale-cream px-6 py-8 sm:px-12 sm:py-10 md:px-16 md:py-12">
         <BackgroundDecor variant="light" />
 
-        <ScreenHeader step={0} onBack={onBack} />
+        <ScreenHeader step={0} onBack={handleBack} />
 
         <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-10 py-6 text-center sm:gap-14 md:gap-16">
           <div className="flex flex-col items-center gap-3 md:gap-4">

@@ -3,13 +3,14 @@
 import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { IdleScreen } from "@/components/screens/IdleScreen";
+import { NpsScreen } from "@/components/screens/NpsScreen";
 import { RatingScreen } from "@/components/screens/RatingScreen";
 import { TextQuestionScreen } from "@/components/screens/TextQuestionScreen";
 import { ThanksScreen } from "@/components/screens/ThanksScreen";
 import { INACTIVITY_TIMEOUT_MS, THANKS_AUTO_RETURN_MS, textQuestions } from "@/config/content";
 import type { RatingValue } from "@/lib/types";
 
-type Step = "idle" | "rating" | "found_everything" | "feedback" | "thanks";
+type Step = "idle" | "rating" | "found_everything" | "feedback" | "nps" | "thanks";
 
 const EMPTY_ANSWERS = { foundEverything: "", feedback: "" };
 
@@ -17,12 +18,15 @@ export function KioskApp() {
   const [step, setStep] = useState<Step>("idle");
   const [rating, setRating] = useState<RatingValue | null>(null);
   const [answers, setAnswers] = useState(EMPTY_ANSWERS);
+  const [npsScore, setNpsScore] = useState<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const ratingRef = useRef<RatingValue | null>(null);
   const answersRef = useRef(EMPTY_ANSWERS);
+  const npsScoreRef = useRef<number | null>(null);
 
   ratingRef.current = rating;
   answersRef.current = answers;
+  npsScoreRef.current = npsScore;
 
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
@@ -36,6 +40,7 @@ export function KioskApp() {
     setStep("idle");
     setRating(null);
     setAnswers(EMPTY_ANSWERS);
+    setNpsScore(null);
   }, [clearTimer]);
 
   const submit = useCallback(async (completed: boolean) => {
@@ -43,6 +48,7 @@ export function KioskApp() {
       rating: ratingRef.current,
       foundEverything: answersRef.current.foundEverything,
       feedback: answersRef.current.feedback,
+      npsScore: npsScoreRef.current,
       completed,
     };
     try {
@@ -95,6 +101,19 @@ export function KioskApp() {
     setStep("feedback");
   }
 
+  function handleFeedback(value: string) {
+    setAnswers((prev) => ({ ...prev, feedback: value }));
+    setStep("nps");
+  }
+
+  async function handleNps(score: number) {
+    setNpsScore(score);
+    npsScoreRef.current = score;
+    clearTimer();
+    setStep("thanks");
+    await submit(true);
+  }
+
   function handleBackToRating() {
     setStep("rating");
   }
@@ -103,12 +122,8 @@ export function KioskApp() {
     setStep("found_everything");
   }
 
-  async function handleFeedback(value: string) {
-    setAnswers((prev) => ({ ...prev, feedback: value }));
-    answersRef.current = { ...answersRef.current, feedback: value };
-    clearTimer();
-    setStep("thanks");
-    await submit(true);
+  function handleBackToFeedback() {
+    setStep("feedback");
   }
 
   return (
@@ -152,6 +167,16 @@ export function KioskApp() {
             initialValue={answers.feedback}
             onSubmit={handleFeedback}
             onBack={handleBackToFoundEverything}
+            onInteract={scheduleInactivityReturn}
+          />
+        )}
+
+        {step === "nps" && (
+          <NpsScreen
+            key="nps"
+            initialValue={npsScore}
+            onSelect={handleNps}
+            onBack={handleBackToFeedback}
             onInteract={scheduleInactivityReturn}
           />
         )}

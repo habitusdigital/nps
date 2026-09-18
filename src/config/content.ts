@@ -22,7 +22,7 @@ export const ratingOptions: RatingOption[] = [
 ];
 
 export const ratingContent = {
-  question: "Como foi sua experiência\nno Vale Café hoje?",
+  question: "Como foi sua experiência\naqui na Vale?",
   hint: "Toque no rosto que mais combina com você",
 };
 
@@ -39,9 +39,16 @@ export const textQuestions = [
     question: "Tem algum elogio de algo que gostou ou alguma crítica de onde podemos melhorar?",
     placeholder: "Sua opinião vale muito (opcional)...",
     skipLabel: "Pular",
-    nextLabel: "Enviar",
+    nextLabel: "Continuar",
   },
 ];
+
+export const npsContent = {
+  question: "De 0 a 10, o quanto você indicaria\na Vale para um amigo ou familiar?",
+  hint: "Toque na nota que representa sua opinião",
+  lowLabel: "Nada provável",
+  highLabel: "Muito provável",
+};
 
 export const thanksContent = {
   title: "Obrigado pela sua avaliação!",

@@ -2,10 +2,10 @@
 
 Formulário de avaliação em tela cheia, feito para rodar num tablet fixo no
 balcão do espaço Vale Café. Tela de abertura animada, uma pergunta por vez
-(com transições suaves), respostas por carinha (😄 😐 😞) e duas perguntas
-abertas opcionais. A cada resposta enviada, dispara um webhook com todos os
-campos + horário, pronto para virar mensagem de WhatsApp numa automação
-(n8n, Make, Zapier etc).
+(com transições suaves), resposta por carinha (😄 😐 😞), duas perguntas
+abertas opcionais e a pergunta clássica de NPS (0 a 10). A cada resposta
+enviada, dispara um webhook com todos os campos + horário, pronto para
+virar mensagem de WhatsApp numa automação (n8n, Make, Zapier etc).
 
 ## Rodando localmente
 
@@ -43,6 +43,7 @@ A cada envio, o back-end (`src/app/api/submit/route.ts`) faz um `POST` em
   "rating": { "value": "positive", "emoji": "😄", "label": "Gostei muito" },
   "foundEverything": "texto da resposta (ou null se pulou)",
   "feedback": "texto da resposta (ou null se pulou)",
+  "nps": { "score": 9, "category": "Promotor" },
   "completed": true,
   "whatsappText": "*Nova avaliação — Vale Café*\n\n🕒 15/09/2026, 17:22\n\n📊 Avaliação: 😄 Gostei muito\n..."
 }
@@ -66,9 +67,10 @@ para o Git.
 
 Tudo fica centralizado em [src/config/content.ts](src/config/content.ts):
 textos da tela de abertura, pergunta da avaliação por carinha, as duas
-perguntas abertas, texto de agradecimento, tempo de inatividade até
-voltar pro início (`INACTIVITY_TIMEOUT_MS`, padrão 45s) e tempo da tela
-de agradecimento (`THANKS_AUTO_RETURN_MS`, padrão 6s).
+perguntas abertas, a pergunta de NPS (0 a 10), texto de agradecimento,
+tempo de inatividade até voltar pro início (`INACTIVITY_TIMEOUT_MS`,
+padrão 45s) e tempo da tela de agradecimento (`THANKS_AUTO_RETURN_MS`,
+padrão 6s).
 
 ## Marca
 

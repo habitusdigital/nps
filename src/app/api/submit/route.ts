@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { FORM_NAME, ratingOptions } from "@/config/content";
-import { buildWhatsAppText, formatLocalDateTime } from "@/lib/whatsapp";
+import { buildWhatsAppText, formatLocalDateTime, npsCategory } from "@/lib/whatsapp";
 import { appendSubmission } from "@/lib/store";
 import type { RatingValue } from "@/lib/types";
 
@@ -12,6 +12,12 @@ const VALID_RATINGS: RatingValue[] = ["positive", "neutral", "negative"];
 function sanitizeText(value: unknown, max = 2000): string {
   if (typeof value !== "string") return "";
   return value.trim().slice(0, max);
+}
+
+function sanitizeNpsScore(value: unknown): number | null {
+  if (typeof value !== "number" || !Number.isInteger(value)) return null;
+  if (value < 0 || value > 10) return null;
+  return value;
 }
 
 async function sendWebhook(payload: Record<string, unknown>): Promise<{ sent: boolean; status?: number }> {
@@ -48,9 +54,10 @@ export async function POST(req: NextRequest) {
   const rating = VALID_RATINGS.includes(data.rating as RatingValue) ? (data.rating as RatingValue) : null;
   const foundEverything = sanitizeText(data.foundEverything);
   const feedback = sanitizeText(data.feedback);
+  const npsScore = sanitizeNpsScore(data.npsScore);
   const completed = Boolean(data.completed);
 
-  if (!rating && !foundEverything && !feedback) {
+  if (!rating && !foundEverything && !feedback && npsScore === null) {
     return NextResponse.json({ ok: false, error: "empty_submission" }, { status: 400 });
   }
 
@@ -68,12 +75,13 @@ export async function POST(req: NextRequest) {
       : null,
     foundEverything: foundEverything || null,
     feedback: feedback || null,
+    nps: npsScore !== null ? { score: npsScore, category: npsCategory(npsScore) } : null,
     completed,
   };
 
   await appendSubmission(record);
 
-  const whatsappText = buildWhatsAppText({ rating, foundEverything, feedback, completed, submittedAt });
+  const whatsappText = buildWhatsAppText({ rating, foundEverything, feedback, npsScore, completed, submittedAt });
 
   const webhookResult = await sendWebhook({
     event: "nps.response.created",

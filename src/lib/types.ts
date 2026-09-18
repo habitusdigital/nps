@@ -4,6 +4,7 @@ export type SurveyPayload = {
   rating: RatingValue | null;
   foundEverything: string;
   feedback: string;
+  npsScore: number | null;
   completed: boolean;
   startedAt: string;
 };
