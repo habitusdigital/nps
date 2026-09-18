@@ -66,18 +66,16 @@ export function IdleScreen({ onStart }: { onStart: () => void }) {
             ))}
           </div>
 
-          <div className="flex flex-col items-center gap-2 sm:gap-3">
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 text-xl text-white sm:h-14 sm:w-14 sm:text-2xl md:h-16 md:w-16 md:text-3xl"
-            >
-              👆
-            </motion.div>
-            <span className="animate-pulse-soft rounded-full bg-white/10 px-7 py-3.5 font-display text-base font-medium tracking-wide text-white sm:px-8 sm:py-4 sm:text-lg md:text-xl">
+          <motion.div
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="flex items-center gap-3 rounded-full bg-white/10 px-6 py-3.5 sm:gap-4 sm:px-8 sm:py-4"
+          >
+            <span className="text-xl sm:text-2xl md:text-3xl">👆</span>
+            <span className="font-display text-base font-medium tracking-wide text-white sm:text-lg md:text-xl">
               {idleContent.cta}
             </span>
-          </div>
+          </motion.div>
         </div>
       </button>
     </ScreenTransition>
