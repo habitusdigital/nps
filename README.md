@@ -58,14 +58,15 @@ em `WEBHOOK_URL` com este formato:
   "feedback": "texto da resposta (ou null se pulou)",
   "nps": { "score": 9, "category": "Promotor" },
   "completed": true,
-  "whatsappText": "*Nova avaliação — Vale Café*\n🕒 18/09/2026, 15:25\n\n❓ *Como foi sua experiência aqui na Vale?*\n😄 Gostei muito\n\n❓ *Encontrou tudo...*\n..."
+  "whatsappText": "*Nova avaliação — Vale Café*\n📅 18/09/2026 às 15:25\n\n❓ *Como foi sua experiência aqui na Vale?*\n😄 Gostei muito\n\n❓ *Encontrou tudo...*\n..."
 }
 ```
 
 - `questions` traz cada pergunta feita junto com a resposta dada (perguntas
   opcionais que o cliente pulou não aparecem na lista) — útil se a
   automação quiser tratar cada uma separadamente.
-- `whatsappText` já vem pronto: cada pergunta em negrito seguida da
+- `whatsappText` já vem pronto: título "Nova avaliação", dia e hora
+  (fuso de São Paulo) e, em seguida, cada pergunta em negrito seguida da
   resposta (ou da nota, no caso do NPS), com emojis e quebras de linha.
   Na automação basta mapear esse campo direto pro corpo da mensagem de
   WhatsApp, sem precisar montar o texto lá.

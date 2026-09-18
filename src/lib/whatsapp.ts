@@ -16,6 +16,21 @@ export function formatLocalDateTime(date: Date): string {
   }).format(date);
 }
 
+function formatDayAndTime(date: Date): string {
+  const day = new Intl.DateTimeFormat("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(date);
+  const time = new Intl.DateTimeFormat("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+  return `${day} às ${time}`;
+}
+
 export function npsCategory(score: number | null): "Detrator" | "Neutro" | "Promotor" | null {
   if (score === null) return null;
   if (score <= 6) return "Detrator";
@@ -59,7 +74,7 @@ export function buildWhatsAppText(params: {
 }): string {
   const { questions, completed, submittedAt } = params;
 
-  const lines = ["*Nova avaliação — Vale Café*", `🕒 ${formatLocalDateTime(submittedAt)}`];
+  const lines = ["*Nova avaliação — Vale Café*", `📅 ${formatDayAndTime(submittedAt)}`];
 
   for (const { question, answer } of questions) {
     lines.push("", `❓ *${question}*`, answer);
