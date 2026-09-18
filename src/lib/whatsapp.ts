@@ -1,4 +1,10 @@
-import { npsContent, ratingContent, ratingOptions, textQuestions } from "@/config/content";
+import {
+  COMPANY_NAME,
+  npsContent,
+  ratingContent,
+  ratingOptions,
+  textQuestions,
+} from "@/config/content";
 import type { RatingValue } from "@/lib/types";
 
 function flatten(text: string): string {
@@ -74,7 +80,7 @@ export function buildWhatsAppText(params: {
 }): string {
   const { questions, completed, submittedAt } = params;
 
-  const lines = ["*Nova avaliação — Vale Café*", `📅 ${formatDayAndTime(submittedAt)}`];
+  const lines = [`*Nova avaliação — ${COMPANY_NAME}*`, `📅 ${formatDayAndTime(submittedAt)}`];
 
   for (const { question, answer } of questions) {
     lines.push("", `❓ *${question}*`, answer);

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { COMPANY_NAME, FORM_NAME } from "@/config/content";
 import "./globals.css";
 
 const display = Fraunces({
@@ -16,8 +17,8 @@ const body = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Vale Café — Pesquisa de Avaliação",
-  description: "Deixe sua avaliação sobre o espaço Vale Café.",
+  title: FORM_NAME,
+  description: `Deixe sua avaliação sobre a sua experiência na ${COMPANY_NAME}.`,
   icons: {
     icon: "/brand/dark/vale-icon-badge.png",
   },

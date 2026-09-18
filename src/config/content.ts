@@ -1,4 +1,6 @@
-export const FORM_NAME = "Vale Café — Pesquisa de Avaliação";
+export const COMPANY_NAME = "Vale Distribuidora";
+
+export const FORM_NAME = `${COMPANY_NAME} — Pesquisa de Avaliação`;
 
 export const idleContent = {
   eyebrow: "Pesquisa de Avaliação",

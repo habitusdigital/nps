@@ -1,7 +1,7 @@
-# Vale Café — Pesquisa de Avaliação (NPS)
+# Vale Distribuidora — Pesquisa de Avaliação (NPS)
 
 Formulário de avaliação em tela cheia, feito para rodar num tablet fixo no
-balcão do espaço Vale Café. Tela de abertura animada, uma pergunta por vez
+espaço de café da Vale. Tela de abertura animada, uma pergunta por vez
 (com transições suaves), resposta por carinha (😄 😐 😞), duas perguntas
 abertas opcionais e a pergunta clássica de NPS (0 a 10). A cada resposta
 enviada, dispara um webhook com todos os campos + horário, pronto para
@@ -58,7 +58,7 @@ em `WEBHOOK_URL` com este formato:
   "feedback": "texto da resposta (ou null se pulou)",
   "nps": { "score": 9, "category": "Promotor" },
   "completed": true,
-  "whatsappText": "*Nova avaliação — Vale Café*\n📅 18/09/2026 às 15:25\n\n❓ *Como foi sua experiência aqui na Vale?*\n😄 Gostei muito\n\n❓ *Encontrou tudo...*\n..."
+  "whatsappText": "*Nova avaliação — Vale Distribuidora*\n📅 18/09/2026 às 15:25\n\n❓ *Como foi sua experiência aqui na Vale?*\n😄 Gostei muito\n\n❓ *Encontrou tudo...*\n..."
 }
 ```
 
