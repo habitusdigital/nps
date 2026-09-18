@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { FORM_NAME, ratingOptions } from "@/config/content";
-import { buildWhatsAppText, formatLocalDateTime, npsCategory } from "@/lib/whatsapp";
+import {
+  buildQuestionAnswerList,
+  buildWhatsAppText,
+  formatLocalDateTime,
+  npsCategory,
+} from "@/lib/whatsapp";
 import { appendSubmission } from "@/lib/store";
 import type { RatingValue } from "@/lib/types";
 
@@ -64,12 +69,14 @@ export async function POST(req: NextRequest) {
   const submittedAt = new Date();
   const id = randomUUID();
   const option = ratingOptions.find((o) => o.value === rating) ?? null;
+  const questions = buildQuestionAnswerList({ rating, foundEverything, feedback, npsScore });
 
   const record = {
     id,
     form: FORM_NAME,
     submittedAt: submittedAt.toISOString(),
     submittedAtLocal: formatLocalDateTime(submittedAt),
+    questions,
     rating: rating
       ? { value: rating, emoji: option?.emoji, label: option?.label }
       : null,
@@ -81,7 +88,7 @@ export async function POST(req: NextRequest) {
 
   await appendSubmission(record);
 
-  const whatsappText = buildWhatsAppText({ rating, foundEverything, feedback, npsScore, completed, submittedAt });
+  const whatsappText = buildWhatsAppText({ questions, completed, submittedAt });
 
   const webhookResult = await sendWebhook({
     event: "nps.response.created",

@@ -24,34 +24,53 @@ npm run start
 
 ## Configurando o webhook do WhatsApp
 
-Copie `.env.example` para `.env` e preencha:
+A URL que recebe os eventos vem de uma ferramenta de automação (n8n,
+Make.com, Zapier...): você cria lá um fluxo com um gatilho do tipo
+"Webhook", a ferramenta gera uma URL única, e você cola essa URL na
+variável de ambiente `WEBHOOK_URL` (no EasyPanel: aba **Ambiente** do
+serviço). É essa automação — não este app — que efetivamente envia a
+mensagem pro grupo do WhatsApp; aqui só disparamos o POST com os dados.
+
+Em desenvolvimento local, copie `.env.example` para `.env` e preencha:
 
 ```
 WEBHOOK_URL=https://sua-automacao.exemplo.com/webhook/vale-cafe-nps
 WEBHOOK_SECRET=algum-segredo-opcional
 ```
 
-A cada envio, o back-end (`src/app/api/submit/route.ts`) faz um `POST` em
-`WEBHOOK_URL` com este formato:
+A cada envio, o back-end (`src/app/api/submit/route.ts`) faz **um** `POST`
+em `WEBHOOK_URL` com este formato:
 
 ```jsonc
 {
   "event": "nps.response.created",
   "id": "uuid-da-resposta",
-  "submittedAt": "2026-09-15T20:22:57.861Z",
-  "submittedAtLocal": "15/09/2026, 17:22",
+  "submittedAt": "2026-09-18T18:25:15.706Z",
+  "submittedAtLocal": "18/09/2026, 15:25",
+  "questions": [
+    { "question": "Como foi sua experiência aqui na Vale?", "answer": "😄 Gostei muito" },
+    { "question": "Encontrou tudo o que procurava ou sentiu falta de algum item?", "answer": "Faltou leite de aveia" },
+    { "question": "Tem algum elogio de algo que gostou ou alguma crítica de onde podemos melhorar?", "answer": "Atendimento excelente!" },
+    { "question": "De 0 a 10, o quanto você indicaria a Vale para um amigo ou familiar?", "answer": "9 (Promotor)" }
+  ],
   "rating": { "value": "positive", "emoji": "😄", "label": "Gostei muito" },
   "foundEverything": "texto da resposta (ou null se pulou)",
   "feedback": "texto da resposta (ou null se pulou)",
   "nps": { "score": 9, "category": "Promotor" },
   "completed": true,
-  "whatsappText": "*Nova avaliação — Vale Café*\n\n🕒 15/09/2026, 17:22\n\n📊 Avaliação: 😄 Gostei muito\n..."
+  "whatsappText": "*Nova avaliação — Vale Café*\n🕒 18/09/2026, 15:25\n\n❓ *Como foi sua experiência aqui na Vale?*\n😄 Gostei muito\n\n❓ *Encontrou tudo...*\n..."
 }
 ```
 
-O campo `whatsappText` já vem pronto (com emojis e quebras de linha) — na
-automação basta mapear esse campo direto pro corpo da mensagem de
-WhatsApp, sem precisar montar o texto lá.
+- `questions` traz cada pergunta feita junto com a resposta dada (perguntas
+  opcionais que o cliente pulou não aparecem na lista) — útil se a
+  automação quiser tratar cada uma separadamente.
+- `whatsappText` já vem pronto: cada pergunta em negrito seguida da
+  resposta (ou da nota, no caso do NPS), com emojis e quebras de linha.
+  Na automação basta mapear esse campo direto pro corpo da mensagem de
+  WhatsApp, sem precisar montar o texto lá.
+- Se `WEBHOOK_SECRET` estiver definido, ele vai no header
+  `x-vale-webhook-secret` pra a automação validar a origem da chamada.
 
 Se `WEBHOOK_URL` não estiver configurado, o formulário continua
 funcionando normalmente (só não dispara nada) — útil pra testar a

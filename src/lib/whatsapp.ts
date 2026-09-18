@@ -1,5 +1,9 @@
-import { ratingOptions } from "@/config/content";
+import { npsContent, ratingContent, ratingOptions, textQuestions } from "@/config/content";
 import type { RatingValue } from "@/lib/types";
+
+function flatten(text: string): string {
+  return text.replace(/\s*\n\s*/g, " ").trim();
+}
 
 export function formatLocalDateTime(date: Date): string {
   return new Intl.DateTimeFormat("pt-BR", {
@@ -19,36 +23,46 @@ export function npsCategory(score: number | null): "Detrator" | "Neutro" | "Prom
   return "Promotor";
 }
 
-export function buildWhatsAppText(params: {
+export function buildQuestionAnswerList(params: {
   rating: RatingValue | null;
   foundEverything: string;
   feedback: string;
   npsScore: number | null;
+}): Array<{ question: string; answer: string }> {
+  const { rating, foundEverything, feedback, npsScore } = params;
+  const option = ratingOptions.find((o) => o.value === rating);
+  const list: Array<{ question: string; answer: string }> = [];
+
+  if (option) {
+    list.push({ question: flatten(ratingContent.question), answer: `${option.emoji} ${option.label}` });
+  }
+  if (foundEverything.trim()) {
+    list.push({ question: textQuestions[0].question, answer: foundEverything.trim() });
+  }
+  if (feedback.trim()) {
+    list.push({ question: textQuestions[1].question, answer: feedback.trim() });
+  }
+  if (npsScore !== null) {
+    list.push({
+      question: flatten(npsContent.question),
+      answer: `${npsScore} (${npsCategory(npsScore)})`,
+    });
+  }
+
+  return list;
+}
+
+export function buildWhatsAppText(params: {
+  questions: Array<{ question: string; answer: string }>;
   completed: boolean;
   submittedAt: Date;
 }): string {
-  const { rating, foundEverything, feedback, npsScore, completed, submittedAt } = params;
-  const option = ratingOptions.find((o) => o.value === rating);
-  const ratingLine = option ? `${option.emoji} ${option.label}` : "Não respondida";
-  const category = npsCategory(npsScore);
+  const { questions, completed, submittedAt } = params;
 
-  const lines = [
-    "*Nova avaliação — Vale Café*",
-    "",
-    `🕒 ${formatLocalDateTime(submittedAt)}`,
-    `📊 Avaliação: ${ratingLine}`,
-  ];
+  const lines = ["*Nova avaliação — Vale Café*", `🕒 ${formatLocalDateTime(submittedAt)}`];
 
-  if (npsScore !== null) {
-    lines.push(`🎯 Nota NPS: ${npsScore}/10 (${category})`);
-  }
-
-  if (foundEverything.trim()) {
-    lines.push("", `🛒 Encontrou tudo o que procurava?\n${foundEverything.trim()}`);
-  }
-
-  if (feedback.trim()) {
-    lines.push("", `💬 Elogio/crítica:\n${feedback.trim()}`);
+  for (const { question, answer } of questions) {
+    lines.push("", `❓ *${question}*`, answer);
   }
 
   if (!completed) {
