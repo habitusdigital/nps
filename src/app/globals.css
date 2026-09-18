@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  background: #f8f4ec;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+textarea,
+input {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.kiosk-height {
+  height: 100dvh;
+  min-height: 100dvh;
+}
+
+.font-display {
+  font-family: var(--font-display), serif;
+}
