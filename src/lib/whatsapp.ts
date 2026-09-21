@@ -1,7 +1,8 @@
 import {
   COMPANY_NAME,
+  experienceContent,
   npsContent,
-  ratingContent,
+  organizationContent,
   ratingOptions,
   textQuestions,
 } from "@/config/content";
@@ -44,18 +45,28 @@ export function npsCategory(score: number | null): "Detrator" | "Neutro" | "Prom
   return "Promotor";
 }
 
+function faceAnswer(value: RatingValue | null): string | null {
+  const option = ratingOptions.find((o) => o.value === value);
+  return option ? `${option.emoji} ${option.label}` : null;
+}
+
 export function buildQuestionAnswerList(params: {
   rating: RatingValue | null;
+  organizationRating: RatingValue | null;
   foundEverything: string;
   feedback: string;
   npsScore: number | null;
 }): Array<{ question: string; answer: string }> {
-  const { rating, foundEverything, feedback, npsScore } = params;
-  const option = ratingOptions.find((o) => o.value === rating);
+  const { rating, organizationRating, foundEverything, feedback, npsScore } = params;
   const list: Array<{ question: string; answer: string }> = [];
 
-  if (option) {
-    list.push({ question: flatten(ratingContent.question), answer: `${option.emoji} ${option.label}` });
+  const experience = faceAnswer(rating);
+  if (experience) {
+    list.push({ question: flatten(experienceContent.question), answer: experience });
+  }
+  const organization = faceAnswer(organizationRating);
+  if (organization) {
+    list.push({ question: flatten(organizationContent.question), answer: organization });
   }
   if (foundEverything.trim()) {
     list.push({ question: textQuestions[0].question, answer: foundEverything.trim() });

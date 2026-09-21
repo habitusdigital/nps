@@ -71,7 +71,7 @@ export function NpsScreen({
       <div className="relative flex h-full w-full flex-col overflow-hidden bg-vale-cream px-6 py-8 sm:px-12 sm:py-10 md:px-16 md:py-12">
         <BackgroundDecor variant="light" />
 
-        <ScreenHeader step={3} onBack={handleBack} />
+        <ScreenHeader step={4} onBack={handleBack} />
 
         <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8 py-6 text-center sm:gap-10 md:gap-12">
           <div className="flex flex-col items-center gap-3 md:gap-4">

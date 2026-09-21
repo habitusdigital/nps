@@ -5,15 +5,19 @@ import { BackgroundDecor } from "@/components/BackgroundDecor";
 import { FaceButton } from "@/components/FaceButton";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ScreenTransition } from "@/components/ScreenTransition";
-import { ratingContent, ratingOptions } from "@/config/content";
+import { ratingOptions, type FaceQuestionContent } from "@/config/content";
 import type { RatingValue } from "@/lib/types";
 
 export function RatingScreen({
+  step,
+  content,
   initialValue,
   onSelect,
   onBack,
   onInteract,
 }: {
+  step: number;
+  content: FaceQuestionContent;
   initialValue: RatingValue | null;
   onSelect: (value: RatingValue) => void;
   onBack: () => void;
@@ -48,14 +52,14 @@ export function RatingScreen({
       <div className="relative flex h-full w-full flex-col overflow-hidden bg-vale-cream px-6 py-8 sm:px-12 sm:py-10 md:px-16 md:py-12">
         <BackgroundDecor variant="light" />
 
-        <ScreenHeader step={0} onBack={handleBack} />
+        <ScreenHeader step={step} onBack={handleBack} />
 
         <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-10 py-6 text-center sm:gap-14 md:gap-16">
           <div className="flex flex-col items-center gap-3 md:gap-4">
             <h2 className="whitespace-pre-line font-display text-3xl font-medium leading-tight text-vale-charcoal sm:text-5xl md:text-6xl">
-              {ratingContent.question}
+              {content.question}
             </h2>
-            <p className="text-sm text-vale-charcoal/60 sm:text-base md:text-lg">{ratingContent.hint}</p>
+            <p className="text-sm text-vale-charcoal/60 sm:text-base md:text-lg">{content.hint}</p>
           </div>
 
           <div className="flex w-full max-w-3xl flex-col gap-4 sm:flex-row sm:gap-6 md:max-w-4xl md:gap-8">

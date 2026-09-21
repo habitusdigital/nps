@@ -2,8 +2,9 @@
 
 Formulário de avaliação em tela cheia, feito para rodar num tablet fixo no
 espaço de café da Vale. Tela de abertura animada, uma pergunta por vez
-(com transições suaves), resposta por carinha (😄 😐 😞), duas perguntas
-abertas opcionais e a pergunta clássica de NPS (0 a 10). A cada resposta
+(com transições suaves), duas perguntas por carinha (😄 😐 😞: experiência e
+organização da loja), duas perguntas abertas opcionais e a pergunta
+clássica de NPS (0 a 10, indicaria para um familiar ou amigo). A cada resposta
 enviada, dispara um webhook com todos os campos + horário, pronto para
 virar mensagem de WhatsApp numa automação (n8n, Make, Zapier etc).
 
@@ -49,11 +50,13 @@ em `WEBHOOK_URL` com este formato:
   "submittedAtLocal": "18/09/2026, 15:25",
   "questions": [
     { "question": "Como foi sua experiência aqui na Vale?", "answer": "😄 Gostei muito" },
+    { "question": "O que achou da organização da loja?", "answer": "😐 Normal" },
     { "question": "Encontrou tudo o que procurava ou sentiu falta de algum item?", "answer": "Faltou leite de aveia" },
     { "question": "Tem algum elogio de algo que gostou ou alguma crítica de onde podemos melhorar?", "answer": "Atendimento excelente!" },
-    { "question": "De 0 a 10, o quanto você indicaria a Vale para um amigo ou familiar?", "answer": "9 (Promotor)" }
+    { "question": "De 0 a 10, o quanto você indicaria a Vale para um familiar ou amigo?", "answer": "9 (Promotor)" }
   ],
   "rating": { "value": "positive", "emoji": "😄", "label": "Gostei muito" },
+  "organization": { "value": "neutral", "emoji": "😐", "label": "Normal" },
   "foundEverything": "texto da resposta (ou null se pulou)",
   "feedback": "texto da resposta (ou null se pulou)",
   "nps": { "score": 9, "category": "Promotor" },
@@ -65,6 +68,8 @@ em `WEBHOOK_URL` com este formato:
 - `questions` traz cada pergunta feita junto com a resposta dada (perguntas
   opcionais que o cliente pulou não aparecem na lista) — útil se a
   automação quiser tratar cada uma separadamente.
+- `rating` é a carinha da experiência geral e `organization` a carinha da
+  organização da loja (ambas `positive`, `neutral` ou `negative`).
 - `whatsappText` já vem pronto: título "Nova avaliação", dia e hora
   (fuso de São Paulo) e, em seguida, cada pergunta em negrito seguida da
   resposta (ou da nota, no caso do NPS), com emojis e quebras de linha.
@@ -86,8 +91,9 @@ para o Git.
 ## Editando o conteúdo (perguntas, textos, tempos)
 
 Tudo fica centralizado em [src/config/content.ts](src/config/content.ts):
-textos da tela de abertura, pergunta da avaliação por carinha, as duas
-perguntas abertas, a pergunta de NPS (0 a 10), texto de agradecimento,
+textos da tela de abertura, as duas perguntas por carinha (`experienceContent`
+e `organizationContent`), as duas perguntas abertas, a pergunta de NPS
+(0 a 10), texto de agradecimento,
 tempo de inatividade até voltar pro início (`INACTIVITY_TIMEOUT_MS`,
 padrão 45s) e tempo da tela de agradecimento (`THANKS_AUTO_RETURN_MS`,
 padrão 6s).

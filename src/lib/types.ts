@@ -2,6 +2,7 @@ export type RatingValue = "positive" | "neutral" | "negative";
 
 export type SurveyPayload = {
   rating: RatingValue | null;
+  organizationRating: RatingValue | null;
   foundEverything: string;
   feedback: string;
   npsScore: number | null;

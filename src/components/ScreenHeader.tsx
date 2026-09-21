@@ -19,7 +19,7 @@ export function ScreenHeader({ step, onBack }: { step: number; onBack?: () => vo
         )}
       </div>
 
-      <ProgressDots total={4} current={step} />
+      <ProgressDots total={5} current={step} />
 
       <Image
         src="/brand/dark/vale-icon-badge.png"

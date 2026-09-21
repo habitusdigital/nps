@@ -19,6 +19,15 @@ function sanitizeText(value: unknown, max = 2000): string {
   return value.trim().slice(0, max);
 }
 
+function sanitizeRating(value: unknown): RatingValue | null {
+  return VALID_RATINGS.includes(value as RatingValue) ? (value as RatingValue) : null;
+}
+
+function describeRating(value: RatingValue | null) {
+  const option = ratingOptions.find((o) => o.value === value);
+  return value && option ? { value, emoji: option.emoji, label: option.label } : null;
+}
+
 function sanitizeNpsScore(value: unknown): number | null {
   if (typeof value !== "number" || !Number.isInteger(value)) return null;
   if (value < 0 || value > 10) return null;
@@ -56,20 +65,26 @@ export async function POST(req: NextRequest) {
   }
 
   const data = (body ?? {}) as Record<string, unknown>;
-  const rating = VALID_RATINGS.includes(data.rating as RatingValue) ? (data.rating as RatingValue) : null;
+  const rating = sanitizeRating(data.rating);
+  const organizationRating = sanitizeRating(data.organizationRating);
   const foundEverything = sanitizeText(data.foundEverything);
   const feedback = sanitizeText(data.feedback);
   const npsScore = sanitizeNpsScore(data.npsScore);
   const completed = Boolean(data.completed);
 
-  if (!rating && !foundEverything && !feedback && npsScore === null) {
+  if (!rating && !organizationRating && !foundEverything && !feedback && npsScore === null) {
     return NextResponse.json({ ok: false, error: "empty_submission" }, { status: 400 });
   }
 
   const submittedAt = new Date();
   const id = randomUUID();
-  const option = ratingOptions.find((o) => o.value === rating) ?? null;
-  const questions = buildQuestionAnswerList({ rating, foundEverything, feedback, npsScore });
+  const questions = buildQuestionAnswerList({
+    rating,
+    organizationRating,
+    foundEverything,
+    feedback,
+    npsScore,
+  });
 
   const record = {
     id,
@@ -77,9 +92,8 @@ export async function POST(req: NextRequest) {
     submittedAt: submittedAt.toISOString(),
     submittedAtLocal: formatLocalDateTime(submittedAt),
     questions,
-    rating: rating
-      ? { value: rating, emoji: option?.emoji, label: option?.label }
-      : null,
+    rating: describeRating(rating),
+    organization: describeRating(organizationRating),
     foundEverything: foundEverything || null,
     feedback: feedback || null,
     nps: npsScore !== null ? { score: npsScore, category: npsCategory(npsScore) } : null,

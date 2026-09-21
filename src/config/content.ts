@@ -23,8 +23,15 @@ export const ratingOptions: RatingOption[] = [
   { value: "negative", emoji: "😞", label: "Não gostei", color: "terracotta" },
 ];
 
-export const ratingContent = {
+export type FaceQuestionContent = { question: string; hint: string };
+
+export const experienceContent: FaceQuestionContent = {
   question: "Como foi sua experiência\naqui na Vale?",
+  hint: "Toque no rosto que mais combina com você",
+};
+
+export const organizationContent: FaceQuestionContent = {
+  question: "O que achou da organização\nda loja?",
   hint: "Toque no rosto que mais combina com você",
 };
 
@@ -46,7 +53,7 @@ export const textQuestions = [
 ];
 
 export const npsContent = {
-  question: "De 0 a 10, o quanto você indicaria\na Vale para um amigo ou familiar?",
+  question: "De 0 a 10, o quanto você indicaria\na Vale para um familiar ou amigo?",
   hint: "Toque na nota que representa sua opinião",
   lowLabel: "Nada provável",
   highLabel: "Muito provável",

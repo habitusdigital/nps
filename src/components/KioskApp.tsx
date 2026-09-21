@@ -7,24 +7,33 @@ import { NpsScreen } from "@/components/screens/NpsScreen";
 import { RatingScreen } from "@/components/screens/RatingScreen";
 import { TextQuestionScreen } from "@/components/screens/TextQuestionScreen";
 import { ThanksScreen } from "@/components/screens/ThanksScreen";
-import { INACTIVITY_TIMEOUT_MS, THANKS_AUTO_RETURN_MS, textQuestions } from "@/config/content";
+import {
+  INACTIVITY_TIMEOUT_MS,
+  THANKS_AUTO_RETURN_MS,
+  experienceContent,
+  organizationContent,
+  textQuestions,
+} from "@/config/content";
 import type { RatingValue } from "@/lib/types";
 
-type Step = "idle" | "rating" | "found_everything" | "feedback" | "nps" | "thanks";
+type Step = "idle" | "rating" | "organization" | "found_everything" | "feedback" | "nps" | "thanks";
 
 const EMPTY_ANSWERS = { foundEverything: "", feedback: "" };
 
 export function KioskApp() {
   const [step, setStep] = useState<Step>("idle");
   const [rating, setRating] = useState<RatingValue | null>(null);
+  const [organizationRating, setOrganizationRating] = useState<RatingValue | null>(null);
   const [answers, setAnswers] = useState(EMPTY_ANSWERS);
   const [npsScore, setNpsScore] = useState<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const ratingRef = useRef<RatingValue | null>(null);
+  const organizationRef = useRef<RatingValue | null>(null);
   const answersRef = useRef(EMPTY_ANSWERS);
   const npsScoreRef = useRef<number | null>(null);
 
   ratingRef.current = rating;
+  organizationRef.current = organizationRating;
   answersRef.current = answers;
   npsScoreRef.current = npsScore;
 
@@ -39,6 +48,7 @@ export function KioskApp() {
     clearTimer();
     setStep("idle");
     setRating(null);
+    setOrganizationRating(null);
     setAnswers(EMPTY_ANSWERS);
     setNpsScore(null);
   }, [clearTimer]);
@@ -46,6 +56,7 @@ export function KioskApp() {
   const submit = useCallback(async (completed: boolean) => {
     const payload = {
       rating: ratingRef.current,
+      organizationRating: organizationRef.current,
       foundEverything: answersRef.current.foundEverything,
       feedback: answersRef.current.feedback,
       npsScore: npsScoreRef.current,
@@ -93,6 +104,11 @@ export function KioskApp() {
 
   function handleRating(value: RatingValue) {
     setRating(value);
+    setStep("organization");
+  }
+
+  function handleOrganization(value: RatingValue) {
+    setOrganizationRating(value);
     setStep("found_everything");
   }
 
@@ -118,6 +134,10 @@ export function KioskApp() {
     setStep("rating");
   }
 
+  function handleBackToOrganization() {
+    setStep("organization");
+  }
+
   function handleBackToFoundEverything() {
     setStep("found_everything");
   }
@@ -134,6 +154,8 @@ export function KioskApp() {
         {step === "rating" && (
           <RatingScreen
             key="rating"
+            step={0}
+            content={experienceContent}
             initialValue={rating}
             onSelect={handleRating}
             onBack={resetToIdle}
@@ -141,17 +163,29 @@ export function KioskApp() {
           />
         )}
 
+        {step === "organization" && (
+          <RatingScreen
+            key="organization"
+            step={1}
+            content={organizationContent}
+            initialValue={organizationRating}
+            onSelect={handleOrganization}
+            onBack={handleBackToRating}
+            onInteract={scheduleInactivityReturn}
+          />
+        )}
+
         {step === "found_everything" && (
           <TextQuestionScreen
             key="found_everything"
-            step={1}
+            step={2}
             question={textQuestions[0].question}
             placeholder={textQuestions[0].placeholder}
             skipLabel={textQuestions[0].skipLabel}
             nextLabel={textQuestions[0].nextLabel}
             initialValue={answers.foundEverything}
             onSubmit={handleFoundEverything}
-            onBack={handleBackToRating}
+            onBack={handleBackToOrganization}
             onInteract={scheduleInactivityReturn}
           />
         )}
@@ -159,7 +193,7 @@ export function KioskApp() {
         {step === "feedback" && (
           <TextQuestionScreen
             key="feedback"
-            step={2}
+            step={3}
             question={textQuestions[1].question}
             placeholder={textQuestions[1].placeholder}
             skipLabel={textQuestions[1].skipLabel}
