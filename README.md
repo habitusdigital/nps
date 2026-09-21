@@ -4,7 +4,7 @@ Formulário de avaliação em tela cheia, feito para rodar num tablet fixo no
 espaço de café da Vale. Tela de abertura animada, uma pergunta por vez
 (com transições suaves), duas perguntas por carinha (😄 😐 😞: experiência e
 organização da loja), duas perguntas abertas opcionais e a pergunta
-clássica de NPS (0 a 10, indicaria para um familiar ou amigo). A cada resposta
+clássica de NPS (0 a 10, o quanto indicaria a Vale). A cada resposta
 enviada, dispara um webhook com todos os campos + horário, pronto para
 virar mensagem de WhatsApp numa automação (n8n, Make, Zapier etc).
 
@@ -53,7 +53,7 @@ em `WEBHOOK_URL` com este formato:
     { "question": "O que achou da organização da loja?", "answer": "😐 Normal" },
     { "question": "Encontrou tudo o que procurava ou sentiu falta de algum item?", "answer": "Faltou leite de aveia" },
     { "question": "Tem algum elogio de algo que gostou ou alguma crítica de onde podemos melhorar?", "answer": "Atendimento excelente!" },
-    { "question": "De 0 a 10, o quanto você indicaria a Vale para um familiar ou amigo?", "answer": "9 (Promotor)" }
+    { "question": "De 0 a 10, o quanto você indicaria a Vale?", "answer": "9 (Promotor)" }
   ],
   "rating": { "value": "positive", "emoji": "😄", "label": "Gostei muito" },
   "organization": { "value": "neutral", "emoji": "😐", "label": "Normal" },

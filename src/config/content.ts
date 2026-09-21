@@ -53,7 +53,7 @@ export const textQuestions = [
 ];
 
 export const npsContent = {
-  question: "De 0 a 10, o quanto você indicaria\na Vale para um familiar ou amigo?",
+  question: "De 0 a 10,\no quanto você indicaria a Vale?",
   hint: "Toque na nota que representa sua opinião",
   lowLabel: "Nada provável",
   highLabel: "Muito provável",
