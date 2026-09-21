@@ -68,49 +68,53 @@ export function NpsScreen({
 
   return (
     <ScreenTransition>
-      <div className="relative flex h-full w-full flex-col overflow-hidden bg-vale-cream px-6 py-8 sm:px-12 sm:py-10 md:px-16 md:py-12">
+      <div className="f-screen-pad relative flex h-full w-full flex-col overflow-hidden bg-vale-cream px-6 sm:px-12 md:px-16">
         <BackgroundDecor variant="light" />
 
         <ScreenHeader step={4} onBack={handleBack} />
 
-        <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8 py-6 text-center sm:gap-10 md:gap-12">
-          <div className="flex flex-col items-center gap-3 md:gap-4">
-            <h2 className="whitespace-pre-line font-display text-3xl font-medium leading-tight text-vale-charcoal sm:text-5xl md:text-6xl">
-              {npsContent.question}
-            </h2>
-            <p className="text-sm text-vale-charcoal/60 sm:text-base md:text-lg">{npsContent.hint}</p>
-          </div>
-
-          <div className="flex w-full max-w-3xl flex-col items-center gap-3 md:max-w-4xl md:gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-3.5">
-              {SCORES.map((score) => {
-                const colors = colorsFor(score);
-                const isSelected = selected === score;
-                return (
-                  <motion.button
-                    key={score}
-                    type="button"
-                    onClick={() => handleSelect(score)}
-                    whileTap={{ scale: 0.9 }}
-                    animate={isSelected ? { scale: [1, 1.12, 1] } : { scale: 1 }}
-                    transition={{ duration: 0.35 }}
-                    className={`flex h-11 w-11 items-center justify-center rounded-2xl border-2 bg-white/70 font-display text-base font-medium backdrop-blur-sm transition-colors sm:h-12 sm:w-12 sm:text-lg md:h-14 md:w-14 md:text-xl ${
-                      isSelected
-                        ? `${colors.border} ${colors.bg} ${colors.text}`
-                        : "border-vale-charcoal/10 text-vale-charcoal hover:border-vale-charcoal/20"
-                    }`}
-                  >
-                    {score}
-                  </motion.button>
-                );
-              })}
+        <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-y-auto text-center">
+          <div className="min-h-2 grow-[2]" />
+          <div className="f-block-gap flex flex-col items-center">
+            <div className="f-title-gap flex flex-col items-center">
+              <h2 className="f-title whitespace-pre-line font-display font-medium text-vale-charcoal">
+                {npsContent.question}
+              </h2>
+              <p className="f-hint text-vale-charcoal/60">{npsContent.hint}</p>
             </div>
 
-            <div className="flex w-full justify-between px-1 text-xs text-vale-charcoal/50 sm:text-sm md:text-base">
-              <span>{npsContent.lowLabel}</span>
-              <span>{npsContent.highLabel}</span>
+            <div className="f-nps-gap flex w-fit max-w-3xl flex-col md:max-w-4xl">
+              <div className="f-nps-gap flex flex-wrap items-center justify-center">
+                {SCORES.map((score) => {
+                  const colors = colorsFor(score);
+                  const isSelected = selected === score;
+                  return (
+                    <motion.button
+                      key={score}
+                      type="button"
+                      onClick={() => handleSelect(score)}
+                      whileTap={{ scale: 0.9 }}
+                      animate={isSelected ? { scale: [1, 1.12, 1] } : { scale: 1 }}
+                      transition={{ duration: 0.35 }}
+                      className={`f-nps-btn flex items-center justify-center rounded-2xl border-2 bg-white/70 font-display font-medium backdrop-blur-sm transition-colors ${
+                        isSelected
+                          ? `${colors.border} ${colors.bg} ${colors.text}`
+                          : "border-vale-charcoal/10 text-vale-charcoal hover:border-vale-charcoal/20"
+                      }`}
+                    >
+                      {score}
+                    </motion.button>
+                  );
+                })}
+              </div>
+
+              <div className="f-hint flex w-full justify-between px-1 text-vale-charcoal/50">
+                <span>{npsContent.lowLabel}</span>
+                <span>{npsContent.highLabel}</span>
+              </div>
             </div>
           </div>
+          <div className="min-h-2 grow-[3.5]" />
         </div>
       </div>
     </ScreenTransition>

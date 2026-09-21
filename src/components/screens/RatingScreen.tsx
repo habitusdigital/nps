@@ -49,29 +49,33 @@ export function RatingScreen({
 
   return (
     <ScreenTransition>
-      <div className="relative flex h-full w-full flex-col overflow-hidden bg-vale-cream px-6 py-8 sm:px-12 sm:py-10 md:px-16 md:py-12">
+      <div className="f-screen-pad relative flex h-full w-full flex-col overflow-hidden bg-vale-cream px-6 sm:px-12 md:px-16">
         <BackgroundDecor variant="light" />
 
         <ScreenHeader step={step} onBack={handleBack} />
 
-        <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-10 py-6 text-center sm:gap-14 md:gap-16">
-          <div className="flex flex-col items-center gap-3 md:gap-4">
-            <h2 className="whitespace-pre-line font-display text-3xl font-medium leading-tight text-vale-charcoal sm:text-5xl md:text-6xl">
-              {content.question}
-            </h2>
-            <p className="text-sm text-vale-charcoal/60 sm:text-base md:text-lg">{content.hint}</p>
-          </div>
+        <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-y-auto text-center">
+          <div className="min-h-2 grow-[2]" />
+          <div className="f-block-gap flex flex-col items-center">
+            <div className="f-title-gap flex flex-col items-center">
+              <h2 className="f-title whitespace-pre-line font-display font-medium text-vale-charcoal">
+                {content.question}
+              </h2>
+              <p className="f-hint text-vale-charcoal/60">{content.hint}</p>
+            </div>
 
-          <div className="flex w-full max-w-3xl flex-col gap-4 sm:flex-row sm:gap-6 md:max-w-4xl md:gap-8">
-            {ratingOptions.map((option) => (
-              <FaceButton
-                key={option.value}
-                option={option}
-                selected={selected === option.value}
-                onSelect={() => handleSelect(option.value)}
-              />
-            ))}
+            <div className="f-row-gap flex w-full max-w-3xl flex-col sm:flex-row md:max-w-4xl">
+              {ratingOptions.map((option) => (
+                <FaceButton
+                  key={option.value}
+                  option={option}
+                  selected={selected === option.value}
+                  onSelect={() => handleSelect(option.value)}
+                />
+              ))}
+            </div>
           </div>
+          <div className="min-h-2 grow-[3.5]" />
         </div>
       </div>
     </ScreenTransition>

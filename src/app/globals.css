@@ -40,3 +40,153 @@ input {
 .font-display {
   font-family: var(--font-display), serif;
 }
+
+/*
+ * Fluid sizing: everything scales with the smaller of the screen's height and
+ * width so each screen fits tablets of any height (and phones) without scrolling.
+ * --h is 1% of the visible height (dvh where supported, vh otherwise).
+ */
+:root {
+  --h: 1vh;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --h: 1dvh;
+  }
+}
+
+@layer components {
+  /* screen frame + header */
+  .f-screen-pad {
+    padding-block: clamp(0.75rem, calc(var(--h) * 3.2), 2.75rem);
+  }
+  .f-header-btn {
+    width: clamp(2rem, min(calc(var(--h) * 5.2), 10vw), 3rem);
+    height: clamp(2rem, min(calc(var(--h) * 5.2), 10vw), 3rem);
+  }
+  .f-header-icon {
+    height: clamp(2rem, min(calc(var(--h) * 5.2), 10vw), 3rem);
+    width: auto;
+  }
+
+  /* question screens (faces / nps / text) */
+  .f-block-gap {
+    gap: clamp(0.75rem, calc(var(--h) * 4.5), 3.5rem);
+  }
+  .f-title-gap {
+    gap: clamp(0.3rem, calc(var(--h) * 1.2), 1rem);
+  }
+  .f-title {
+    font-size: clamp(1.6rem, min(calc(var(--h) * 6.2), 6.4vw), 3.75rem);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .f-title-text {
+    font-size: clamp(1.35rem, min(calc(var(--h) * 4.6), 6vw), 3rem);
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  .f-hint {
+    font-size: clamp(0.8rem, min(calc(var(--h) * 2.1), 3.6vw), 1.125rem);
+  }
+  .f-row-gap {
+    gap: clamp(0.6rem, calc(var(--h) * 2.2), 2rem);
+  }
+  .f-face-card {
+    padding-block: clamp(0.75rem, calc(var(--h) * 3.2), 3rem);
+    gap: clamp(0.25rem, calc(var(--h) * 1.5), 1rem);
+  }
+  .f-face-emoji {
+    font-size: clamp(3rem, min(calc(var(--h) * 12), 15vw), 7rem);
+    line-height: 1.1;
+  }
+  .f-face-label {
+    font-size: clamp(1rem, min(calc(var(--h) * 2.8), 4.4vw), 1.5rem);
+  }
+  .f-nps-gap {
+    gap: clamp(0.4rem, calc(var(--h) * 1.5), 1rem);
+  }
+  .f-nps-btn {
+    width: clamp(2.75rem, min(calc(var(--h) * 7.5), 5.6vw), 3.75rem);
+    height: clamp(2.75rem, min(calc(var(--h) * 7.5), 5.6vw), 3.75rem);
+    font-size: clamp(1rem, min(calc(var(--h) * 2.6), 4vw), 1.5rem);
+  }
+  .f-textarea {
+    font-size: clamp(1rem, min(calc(var(--h) * 2.8), 4.4vw), 1.5rem);
+    padding: clamp(0.75rem, calc(var(--h) * 2.4), 1.75rem);
+    min-height: clamp(5.5rem, calc(var(--h) * 22), 12rem);
+  }
+  .f-action-btn {
+    font-size: clamp(1rem, min(calc(var(--h) * 2.6), 4.4vw), 1.25rem);
+    padding-block: clamp(0.7rem, calc(var(--h) * 2.2), 1.4rem);
+  }
+
+  /* idle + thanks (dark) screens */
+  .f-stack-gap {
+    gap: clamp(0.6rem, calc(var(--h) * 3.4), 2.5rem);
+  }
+  .f-copy-gap {
+    gap: clamp(0.35rem, calc(var(--h) * 1.5), 1.25rem);
+  }
+  .f-lockup-gap {
+    gap: clamp(0.6rem, calc(var(--h) * 1.8), 1.25rem);
+  }
+  .f-idle-logo {
+    height: clamp(1.75rem, min(calc(var(--h) * 6.5), 9vw), 3.5rem);
+    width: auto;
+  }
+  .f-lockup-divider {
+    height: clamp(1.1rem, min(calc(var(--h) * 4), 6vw), 2.1rem);
+  }
+  .f-idle-cafe {
+    font-size: clamp(0.85rem, min(calc(var(--h) * 2.8), 4vw), 1.5rem);
+    letter-spacing: 0.45em;
+  }
+  .f-idle-title {
+    font-size: clamp(1.75rem, min(calc(var(--h) * 7.2), 8vw), 4.25rem);
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+  .f-body {
+    font-size: clamp(0.95rem, min(calc(var(--h) * 2.8), 3.8vw), 1.6rem);
+    line-height: 1.4;
+  }
+  .f-idle-highlight {
+    font-size: clamp(1.25rem, min(calc(var(--h) * 4), 5.6vw), 2.5rem);
+  }
+  .f-idle-faces {
+    font-size: clamp(2rem, min(calc(var(--h) * 6.5), 9.5vw), 4rem);
+    line-height: 1.1;
+  }
+  .f-idle-faces-row {
+    gap: clamp(1rem, calc(var(--h) * 3.2), 2.5rem);
+  }
+  .f-cta {
+    font-size: clamp(0.95rem, min(calc(var(--h) * 2.6), 4vw), 1.4rem);
+  }
+  .f-cta-icon {
+    font-size: clamp(1.1rem, min(calc(var(--h) * 3.2), 5vw), 1.8rem);
+  }
+  .f-cta-pill {
+    gap: clamp(0.5rem, calc(var(--h) * 1.6), 1rem);
+    padding: clamp(0.6rem, calc(var(--h) * 1.9), 1.1rem) clamp(1.25rem, calc(var(--h) * 3.4), 2.25rem);
+  }
+  .f-thanks-circle {
+    width: clamp(4rem, calc(var(--h) * 13), 8rem);
+    height: clamp(4rem, calc(var(--h) * 13), 8rem);
+    font-size: clamp(2rem, calc(var(--h) * 7), 4.5rem);
+  }
+  .f-thanks-logo {
+    height: clamp(1.5rem, calc(var(--h) * 5), 2.75rem);
+    width: auto;
+  }
+  .f-thanks-count {
+    width: clamp(2rem, calc(var(--h) * 5.2), 2.75rem);
+    height: clamp(2rem, calc(var(--h) * 5.2), 2.75rem);
+    font-size: clamp(0.85rem, calc(var(--h) * 2.2), 1.1rem);
+  }
+  .f-thanks-small {
+    font-size: clamp(0.7rem, calc(var(--h) * 1.8), 0.9rem);
+  }
+}

@@ -3,7 +3,6 @@ export const COMPANY_NAME = "Vale Distribuidora";
 export const FORM_NAME = `${COMPANY_NAME} — Pesquisa de Avaliação`;
 
 export const idleContent = {
-  eyebrow: "Pesquisa de Avaliação",
   title: "Seja bem-vindo ao\nespaço Vale Café",
   subtitle: "Enquanto você toma uma deliciosa bebida, que tal deixar uma avaliação?",
   highlight: "Sua opinião Vale muito!",
