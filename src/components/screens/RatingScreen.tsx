@@ -75,7 +75,7 @@ export function RatingScreen({
               ))}
             </div>
           </div>
-          <div className="min-h-2 grow-[3.5]" />
+          <div className="min-h-2 grow-[3]" />
         </div>
       </div>
     </ScreenTransition>

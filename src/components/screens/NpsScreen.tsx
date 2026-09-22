@@ -83,7 +83,7 @@ export function NpsScreen({
               <p className="f-hint text-vale-charcoal/60">{npsContent.hint}</p>
             </div>
 
-            <div className="f-nps-gap flex w-fit max-w-3xl flex-col md:max-w-4xl">
+            <div className="f-nps-gap flex w-fit max-w-full flex-col">
               <div className="f-nps-gap flex flex-wrap items-center justify-center">
                 {SCORES.map((score) => {
                   const colors = colorsFor(score);
@@ -114,7 +114,7 @@ export function NpsScreen({
               </div>
             </div>
           </div>
-          <div className="min-h-2 grow-[3.5]" />
+          <div className="min-h-2 grow-[3]" />
         </div>
       </div>
     </ScreenTransition>

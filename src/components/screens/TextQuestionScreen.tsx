@@ -37,8 +37,8 @@ export function TextQuestionScreen({
 
         <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-y-auto">
           <div className="min-h-2 grow-[2]" />
-          <div className="f-block-gap flex flex-col items-center">
-            <h2 className="f-title-text max-w-2xl text-center font-display font-medium text-vale-charcoal md:max-w-3xl">
+          <div className="f-text-gap flex flex-col items-center">
+            <h2 className="f-title-text max-w-2xl text-center font-display font-medium text-vale-charcoal md:max-w-4xl">
               {question}
             </h2>
 
@@ -55,7 +55,7 @@ export function TextQuestionScreen({
               className="f-textarea w-full max-w-2xl resize-none rounded-3xl border-2 border-vale-charcoal/10 bg-white/80 text-vale-charcoal shadow-sm outline-none backdrop-blur-sm transition-colors focus:border-vale-sage md:max-w-3xl"
             />
 
-            <div className="f-row-gap flex w-full max-w-2xl flex-col sm:flex-row md:max-w-3xl">
+            <div className="f-row-gap flex w-full max-w-2xl flex-row md:max-w-3xl">
               <button
                 type="button"
                 onClick={() => {
@@ -78,7 +78,7 @@ export function TextQuestionScreen({
               </button>
             </div>
           </div>
-          <div className="min-h-2 grow-[3.5]" />
+          <div className="min-h-2 grow-[3]" />
         </div>
       </div>
     </ScreenTransition>
